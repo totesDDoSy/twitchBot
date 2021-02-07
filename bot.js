@@ -2,6 +2,7 @@ const tmi = require('tmi.js');
 const fs = require('fs');
 
 const Discord = require('discord.js');
+
 const secrets = JSON.parse(fs.readFileSync('./secrets.json'));
 const config = JSON.parse(fs.readFileSync('./config.json'));
 
@@ -14,8 +15,6 @@ const oauth = secrets.twitch.oauthToken;
 const token = secrets.discord.token;
 
 // Discord config options
-const discordChannel = '';
-
 // Create the discord client
 const discordClient = new Discord.Client();
 
@@ -75,18 +74,14 @@ function onTwitchMessageHandler (target, context, msg, self) {
 	if (!discordConnected) {
 		console.error('* Twitch -> Discord\nCannot send message, not connected to Discord');
 	}
-	config.discord.connections.forEach(connection => {
-		const authorName = context['display-name'];
-		const fullMessage = `[${authorName}]: ${message}`;
+
+	const authorName = context['display-name'];
+	const fullMessage = `[${authorName}]: ${message}`;
+
+	config.discord.connections.forEach(connection => 
 		discordClient.channels.fetch(connection.channelId)
-			.then(channel => {
-				console.log(`* Twitch -> Discord\n${fullMessage}`);
-				channel.send(fullMessage);
-			})
-			.catch(err => {
-				console.log(`Could not send message to connection "${connection.name}"`);
-			});
-	});
+			.then(channel => sendDiscordMessage(channel, fullMessage))
+			.catch(err => console.log(`Could not send message to connection "${connection.name}"\n${err}`)));
 }
 
 // Discord message handler
@@ -97,14 +92,20 @@ function onDiscordMessageHandler( message ) {
 	}
 	const member = message.guild.member(message.author);
 	const fullMessage = `[${member.displayName}]: ${message.content.trim()}`;
-	config.twitch.channels.forEach(channel => {
-		twitchClient.say(`${channel}`, fullMessage);
-		console.log(`* Discord -> Twitch\n${fullMessage}`);
-	});
+	config.twitch.channels.forEach(channel => sendTwitchMessage(channel, fullMessage));
 }
 /* END Message handlers */
 /* END event handlers */
 
 
 /* BEGIN Helper functions */
+function sendTwitchMessage(channel, message) {
+	twitchClient.say(`${channel}`, message);
+	console.log(`* Discord -> Twitch\n${message}`);
+}
+
+function sendDiscordMessage(channel, message) {
+	channel.send(message);
+	console.log(`* Twitch -> Discord\n${message}`);
+}
 /* END Helper functions */
