@@ -1,0 +1,89 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "properties": {
+        "discord": {
+            "properties": {
+                "connections": {
+                    "items": [
+                        {
+                            "properties": {
+                                "channelId": {
+                                    "type": "string"
+                                },
+                                "guildId": {
+                                    "type": "string"
+                                },
+                                "name": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "channelId",
+                                "guildId",
+                                "name"
+                            ],
+                            "type": "object"
+                        },
+                        {
+                            "properties": {
+                                "channelId": {
+                                    "type": "string"
+                                },
+                                "guildId": {
+                                    "type": "string"
+                                },
+                                "name": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "channelId",
+                                "guildId",
+                                "name"
+                            ],
+                            "type": "object"
+                        }
+                    ],
+                    "type": "array"
+                }
+            },
+            "required": [
+                "connections"
+            ],
+            "type": "object"
+        },
+        "twitch": {
+            "properties": {
+                "channels": {
+                    "items": [
+                        {
+                            "type": "string"
+                        }
+                    ],
+                    "type": "array"
+                },
+                "identity": {
+                    "properties": {
+                        "username": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "username"
+                    ],
+                    "type": "object"
+                }
+            },
+            "required": [
+                "channels",
+                "identity"
+            ],
+            "type": "object"
+        }
+    },
+    "required": [
+        "discord",
+        "twitch"
+    ],
+    "type": "object"
+}
