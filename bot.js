@@ -64,7 +64,6 @@ function onDiscordReadyHandler() {
 }
 /* END Connect handlers */
 
-
 /* BEGIN Message handlers */
 // Twitch message handler
 function onTwitchMessageHandler (target, context, msg, self) {
@@ -73,30 +72,21 @@ function onTwitchMessageHandler (target, context, msg, self) {
 	// Remove whitespace from chat message
 	const message = msg.trim();
 
-	if (message === '') {
-		twitchClient.say(target, ``);
-		console.log(`* Executed ${message} command`);
-	} else {
-		if (!discordConnected) {
-			console.error('* Twitch -> Discord\nCannot send message, not connected to Discord');
-		}
-		config.discord.connections.forEach(connection => {
-			try {
-				const authorName = context['display-name'];
-				const fullMessage = `[${authorName}]: ${message}`;
-				discordClient.channels.fetch(connection.channelId)
-					.then(channel => {
-						console.log(`* Twitch -> Discord\n${fullMessage}`);
-						channel.send(fullMessage);
-					})
-					.catch(err => {
-						console.log(`Could not send message to connection "${connection.name}"`);
-					});
-			} catch (err) {
-				console.log(`Error sending message on on discord connection ${connection.name}: ${err}`);
-			}
-		});
+	if (!discordConnected) {
+		console.error('* Twitch -> Discord\nCannot send message, not connected to Discord');
 	}
+	config.discord.connections.forEach(connection => {
+		const authorName = context['display-name'];
+		const fullMessage = `[${authorName}]: ${message}`;
+		discordClient.channels.fetch(connection.channelId)
+			.then(channel => {
+				console.log(`* Twitch -> Discord\n${fullMessage}`);
+				channel.send(fullMessage);
+			})
+			.catch(err => {
+				console.log(`Could not send message to connection "${connection.name}"`);
+			});
+	});
 }
 
 // Discord message handler
@@ -107,8 +97,10 @@ function onDiscordMessageHandler( message ) {
 	}
 	const member = message.guild.member(message.author);
 	const fullMessage = `[${member.displayName}]: ${message.content.trim()}`;
-	twitchClient.say('#totesDDoSy', fullMessage);
-	console.log(`* Discord -> Twitch\n${fullMessage}`);
+	config.twitch.channels.forEach(channel => {
+		twitchClient.say(`${channel}`, fullMessage);
+		console.log(`* Discord -> Twitch\n${fullMessage}`);
+	});
 }
 /* END Message handlers */
 /* END event handlers */
