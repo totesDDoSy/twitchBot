@@ -1,0 +1,22 @@
+{
+    "discord": {
+        "connections": [
+            {
+                "channelId": "",
+                "guildId": "564935964904914955",
+                "name": "RPG Mishaps"
+            },
+            {
+                "channelId": "170045470427578369",
+                "guildId": "170045470427578369",
+                "name": "totes clan"
+            }
+        ]
+    },
+    "twitch": {
+        "channels": ["totesDDoSy"],
+        "identity": {
+            "username": "totesDDoSy"
+        }
+    }
+}
