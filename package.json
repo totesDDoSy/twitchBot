@@ -1,0 +1,24 @@
+{
+  "name": "twitchbot",
+  "version": "0.1.0",
+  "description": "A bot to send message from Twitch Chat to Discord and back.",
+  "main": "bot.js",
+  "dependencies": {
+    "discord.js": "^12.5.1",
+    "tmi.js": "^1.7.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/totesDDoSy/twitchBot.git"
+  },
+  "author": "Cody Sanford",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/totesDDoSy/twitchBot/issues"
+  },
+  "homepage": "https://github.com/totesDDoSy/twitchBot#readme"
+}
